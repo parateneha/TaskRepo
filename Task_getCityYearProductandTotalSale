@@ -1,0 +1,49 @@
+SQL Query For City X Year X Product - total sales - city, in a year, which product has how much total sales 
+
+1.find out the all Common records with required fields from this tables i.e. order, Order Details and Products Tables
+
+ SELECT p.ProductID,p.ProductName,p.QuantityPerUnit,o.ShipCity, o.OrderDate,od.Quantity  FROM [dbo].[Orders] o
+ INNER JOIN [dbo].[Order Details] od ON o.OrderID = od.OrderID
+ INNER JOIN [dbo].[Products] p ON p.ProductID = od.ProductID
+ 
+ 2. Create query to find Total Sale on city based
+ 
+ SELECT o.ShipCity,COUNT(od.Quantity) CountOfSales FROM [dbo].[Orders] o
+ INNER JOIN [dbo].[Order Details] od ON o.OrderID = od.OrderID
+ INNER JOIN [dbo].[Products] p ON p.ProductID = od.ProductID
+ GROUP BY o.ShipCity
+ ORDER BY o.ShipCity ASC
+ 
+ 3.Create query to find Total Sales on year based
+ SELECT _year,SUM(_CountOfSales) as TotalSale FROM
+ (SELECT year(o.OrderDate) as _year, SUM(od.Quantity) _CountOfSales FROM [dbo].[Orders] o
+ INNER JOIN [dbo].[Order Details] od ON o.OrderID = od.OrderID
+ GROUP BY o.OrderDate) tempCity
+ GROUP BY _year
+ 
+ 3. Create a query to Check Total Sales on Per year 
+ 
+ SELECT SUM(od.Quantity) _CountOfSales FROM [dbo].[Orders] o
+ INNER JOIN [dbo].[Order Details] od ON o.OrderID = od.OrderID
+ WHERE year(o.OrderDate) = 1997 
+ 
+ 
+ 4. Create a query to find out all data Per Year Sale 
+
+ SELECT o.ShipCity as City ,year(o.OrderDate) as SaleYear, p.ProductName,Sum(od.Quantity) CountOfTotalSales  FROM [dbo].[Orders] o
+ INNER JOIN [dbo].[Order Details] od ON o.OrderID = od.OrderID
+ INNER JOIN [dbo].[Products] p ON p.ProductID = od.ProductID 
+ where year(o.OrderDate) = 1997
+ GROUP BY o.ShipCity,p.ProductName, year(o.OrderDate)
+ ORDER BY year(o.OrderDate) ASC
+ 
+ 
+  5. Create a query to find out City X Year X Product - total sales - city, in a year, which product has how much total sales
+ 
+ SELECT o.ShipCity as City ,year(o.OrderDate) as SaleYear, p.ProductName,Sum(od.Quantity) CountOfTotalSales  FROM [dbo].[Orders] o
+ INNER JOIN [dbo].[Order Details] od ON o.OrderID = od.OrderID
+ INNER JOIN [dbo].[Products] p ON p.ProductID = od.ProductID 
+ GROUP BY o.ShipCity,p.ProductName, year(o.OrderDate)
+ ORDER BY year(o.OrderDate) ASC
+ 
+ 
